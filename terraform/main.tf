@@ -8,13 +8,13 @@ module "vpc" {
 }
 
 module "iam" {
-  source = "git::https://github.com/<your-user>/infra-modules.git//iam"
+  source = "git::https://github.com/akhilankam/infra-modules.git//iam"
 
   cluster_name = "my-eks-cluster"
 }
 
 module "eks" {
-  source = "git::https://github.com/<your-user>/infra-modules.git//eks"
+  source = "git::https://github.com/akhilankam/infra-modules.git//eks"
 
   cluster_name           = "my-eks-cluster"
   eks_cluster_role_arn   = module.iam.eks_cluster_role_arn
@@ -23,14 +23,14 @@ module "eks" {
 }
 
 module "rds" {
-  source = "git::https://github.com/<your-user>/infra-modules.git//rds"
+  source = "git::https://github.com/akhilankam/infra-modules.git//rds"
 
   vpc_security_group_ids = [module.vpc.database_sg_id]
   subnet_ids             = module.vpc.private_subnets
 }
 
 module "alb_ingress" {
-  source = "git::https://github.com/<your-user>/infra-modules.git//alb"
+  source = "git::https://github.com/akhilankam/infra-modules.git//alb"
 
   cluster_name              = module.eks.cluster_name
   cluster_oidc_provider_arn = module.eks.oidc_provider_arn
