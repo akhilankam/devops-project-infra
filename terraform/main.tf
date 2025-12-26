@@ -58,7 +58,7 @@ module "fastapi_app_irsa" {
   permissions = [
     {
       action    = "secretsmanager:GetSecretValue"
-      resources = ["arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:app-db-secret*"]
+      resources = ["arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:app-db-credentials*"]
     }
   ]
 
