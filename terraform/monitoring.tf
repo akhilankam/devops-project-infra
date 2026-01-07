@@ -1,3 +1,12 @@
+# Delay resource to ensure EKS is ready
+resource "null_resource" "wait_for_eks" {
+  # Ensure it runs after the EKS cluster is created
+  depends_on = [module.eks]
+
+  provisioner "local-exec" {
+    command = "sleep 60" # wait for 60 seconds
+  }
+}
 ############################################
 # Monitoring Namespace
 ############################################
@@ -7,7 +16,7 @@ resource "kubernetes_namespace_v1" "monitoring" {
   }
 
   # Ensure EKS control plane is ready
-  depends_on = [module.eks]
+  depends_on = [null_resource.wait_for_eks]
 }
 
 ############################################
@@ -19,7 +28,7 @@ resource "helm_release" "monitoring" {
   repository = "https://prometheus-community.github.io/helm-charts"
   chart      = "kube-prometheus-stack"
   version    = "58.3.0"
-
+  depends_on = [kubernetes_namespace_v1.monitoring]
   values = [
     yamlencode({
 
