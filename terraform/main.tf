@@ -24,7 +24,7 @@ module "eks" {
   eks_node_role_arn    = module.iam.eks_node_role_arn
   public_subnets       = module.vpc.public_subnets
   vpc_id               = module.vpc.vpc_id
-  eks_version          = 1.33
+  eks_version          = "1.34"
 }
 
 module "rds" {
